@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -76,10 +77,19 @@ public class GUI extends JFrame {
 
 	private Process invokeProcess(String... arguments) throws IOException {
 		Path javaExecutablePath = Paths.get(System.getProperty("java.home"),"bin","java");
-	
-		String[] systemArgs = new String[]{javaExecutablePath.toString(), "-jar", "Contents/Resources/pdftk-all.jar" };
+		Path currentPath = Paths.get("").toAbsolutePath();
+		String[] systemArgs;
+		if ( currentPath.getFileName().toString().equalsIgnoreCase("PDF Filler.app")) {
+			systemArgs = new String[]{javaExecutablePath.toString(), "-jar", "Contents/Resources/pdftk-all.jar" };
+		} else {
+			systemArgs = new String[]{javaExecutablePath.toString(), "-jar", Paths.get("", "pdftk-all.jar").toAbsolutePath().toString() };
+		}
 		String[] args = Stream.concat(Arrays.stream(systemArgs), Arrays.stream(arguments)).toArray(String[]::new);
-		
+
+		System.out.println("Invoking process with args : ");
+		for(String arg : args) {
+			System.out.println(arg);
+		}
 		Process pr = Runtime.getRuntime().exec(args);
 		return pr;
 		
