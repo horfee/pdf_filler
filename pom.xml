@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.horfee</groupId>
+  <artifactId>pdf_filler</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>PDFFiller</name>
+  <description>use to take an excel file and inject the values to fdf file	</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.poi</groupId>
+  		<artifactId>poi-ooxml</artifactId>
+  		<version>5.2.5</version>
+  	</dependency>
+  </dependencies>
+  
+  <build>
+	<plugins>
+	<plugin>
+        <groupId>de.perdian.maven.plugins</groupId>
+        <artifactId>macosappbundler-maven-plugin</artifactId>
+        <version>1.20.0</version>
+        <configuration>
+            <plist>
+				<CFBundleIconFile>src/main/resources/pdf_filler.icns</CFBundleIconFile>
+                <CFBundleDisplayName>PDF Filler</CFBundleDisplayName>
+        		<CFBundleName>PDF Filler</CFBundleName>
+                <CFBundleDevelopmentRegion>English</CFBundleDevelopmentRegion>
+                <JVMLogLevel>INFO</JVMLogLevel>
+                <JVMMainClassName>org.horfee.pdf_filler.GUI</JVMMainClassName>
+                <JVMVersion>11+</JVMVersion>
+            </plist>
+            <app>
+	            <additionalResources>
+	                <resource>
+	                    <directory>${project.basedir}/src/main/resources</directory>
+	                    <outputDirectory>Contents/Resources</outputDirectory>
+	                    <includes>
+	                        <include>**</include>
+	                    </includes>
+	                </resource>
+	            </additionalResources>
+	        </app>
+        </configuration>
+
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                    <goal>bundle</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>	
+	</plugins>
+  </build>
+  	
+</project>
