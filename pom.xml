@@ -5,60 +5,99 @@
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.horfee</groupId>
-  <artifactId>pdf_filler</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>PDFFiller</name>
-  <description>use to take an excel file and inject the values to fdf file	</description>
-  <dependencies>
-  	<dependency>
-  		<groupId>org.apache.poi</groupId>
-  		<artifactId>poi-ooxml</artifactId>
-  		<version>5.2.5</version>
-  	</dependency>
-  </dependencies>
-  
-  <build>
-	<plugins>
-	<plugin>
-        <groupId>de.perdian.maven.plugins</groupId>
-        <artifactId>macosappbundler-maven-plugin</artifactId>
-        <version>1.20.0</version>
-        <configuration>
-            <plist>
-				<CFBundleIconFile>src/main/resources/pdf_filler.icns</CFBundleIconFile>
-                <CFBundleDisplayName>PDF Filler</CFBundleDisplayName>
-        		<CFBundleName>PDF Filler</CFBundleName>
-                <CFBundleDevelopmentRegion>English</CFBundleDevelopmentRegion>
-                <JVMLogLevel>INFO</JVMLogLevel>
-                <JVMMainClassName>org.horfee.pdf_filler.GUI</JVMMainClassName>
-                <JVMVersion>11+</JVMVersion>
-            </plist>
-            <app>
-	            <additionalResources>
-	                <resource>
-	                    <directory>${project.basedir}/src/main/resources</directory>
-	                    <outputDirectory>Contents/Resources</outputDirectory>
-	                    <includes>
-	                        <include>**</include>
-	                    </includes>
-	                </resource>
-	            </additionalResources>
-	        </app>
-        </configuration>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.horfee</groupId>
+	<artifactId>pdf_filler</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>PDFFiller</name>
+	<description>use to take an excel file and inject the values to fdf file </description>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.5</version>
+		</dependency>
+	</dependencies>
 
-        <executions>
-            <execution>
-                <phase>package</phase>
-                <goals>
-                    <goal>bundle</goal>
-                </goals>
-            </execution>
-        </executions>
-    </plugin>	
-	</plugins>
-  </build>
-  	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/dist.xml</descriptor>
+					</descriptors>
+					<archive>
+						<manifest>
+							<mainClass>org.horfee.pdf_filler.GUI</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>org.horfee.pdf_filler.GUI</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>de.perdian.maven.plugins</groupId>
+				<artifactId>macosappbundler-maven-plugin</artifactId>
+				<version>1.20.0</version>
+				<configuration>
+					<plist>
+						<CFBundleIconFile>src/main/resources/pdf_filler.icns</CFBundleIconFile>
+						<CFBundleDisplayName>PDF Filler</CFBundleDisplayName>
+						<CFBundleName>PDF Filler</CFBundleName>
+						<CFBundleDevelopmentRegion>English</CFBundleDevelopmentRegion>
+						<JVMLogLevel>INFO</JVMLogLevel>
+						<JVMMainClassName>org.horfee.pdf_filler.GUI</JVMMainClassName>
+						<JVMVersion>11+</JVMVersion>
+					</plist>
+					<app>
+						<additionalResources>
+							<resource>
+								<directory>${project.basedir}/src/main/resources</directory>
+								<outputDirectory>Contents/Resources</outputDirectory>
+								<includes>
+									<include>**</include>
+								</includes>
+							</resource>
+						</additionalResources>
+					</app>
+				</configuration>
+
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
